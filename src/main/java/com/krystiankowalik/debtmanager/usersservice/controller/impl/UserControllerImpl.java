@@ -26,10 +26,16 @@ public class UserControllerImpl implements UserController {
                                                @RequestParam(required = false) String email,
                                                @RequestParam(required = false) Integer first,
                                                @RequestParam(required = false) Integer max,
-                                               @RequestParam(required = false) boolean detail) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.getAllUsers(userName, firstName, lastName, email, first, max, detail),
+                                               @RequestParam(required = false) boolean detail,
+                                               @RequestParam(required = false) List<String> ids) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getUsers(userName, firstName, lastName, email, first, max, detail, ids),
                 HttpStatus.OK);
     }
+
+   /* @Override
+    public ResponseEntity<List<User>> getUsersByIds(@RequestBody List<String> ids) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getUsers(ids), HttpStatus.OK);
+    }*/
 
     @Override
     public ResponseEntity<User> getUser(@PathVariable String id) throws UserNotFoundException {

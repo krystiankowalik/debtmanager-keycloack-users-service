@@ -9,6 +9,7 @@ import com.krystiankowalik.debtmanager.usersservice.util.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotAuthorizedException;
@@ -16,6 +17,7 @@ import javax.ws.rs.NotFoundException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,15 +27,23 @@ public class UserServiceImpl implements UserService {
     private final RealmResource realm;
 
     @Override
-    public List<User> getAllUsers(String userName,
-                                  String firstName,
-                                  String lastName,
-                                  String email,
-                                  Integer first,
-                                  Integer max,
-                                  boolean detail) throws UserNotFoundException {
+    public List<User> getUsers(String userName,
+                               String firstName,
+                               String lastName,
+                               String email,
+                               Integer first,
+                               Integer max,
+                               boolean detail,
+                               List<String> ids) throws UserNotFoundException {
 
-        List<User> users = getUsers(userName, firstName, lastName, email, first, max);
+
+        List<User> users;
+        if (ids == null) {
+            users = getUsers(userName, firstName, lastName, email, first, max);
+
+        } else {
+            users = getUsers(ids);
+        }
 
         if (detail) {
             for (User u : users) {
@@ -56,6 +66,13 @@ public class UserServiceImpl implements UserService {
                 .users()
                 .search(username, firstName, lastName, email, first, max);
         return UserMapper.from(userRepresentations);
+    }
+
+    @Override
+    public List<User> getUsers(List<String> ids) throws UserNotFoundException {
+        val allUsers = getUsers(null, null, null, null, null, null);
+        return allUsers.stream().filter(u -> ids.contains(u.getId())).collect(Collectors.toList());
+
     }
 
 

@@ -10,13 +10,24 @@ import java.util.List;
 public interface UserService {
 
 
-    List<User> getAllUsers(String userName,
-                           String firstName,
-                           String lastName,
-                           String email,
-                           Integer first,
-                           Integer max,
-                           boolean detail) throws UserNotFoundException;
+   /* List<User> getUsers(String userName,
+                        String firstName,
+                        String lastName,
+                        String email,
+                        Integer first,
+                        Integer max,
+                        boolean detail) throws UserNotFoundException;*/
+
+    List<User> getUsers(String userName,
+                        String firstName,
+                        String lastName,
+                        String email,
+                        Integer first,
+                        Integer max,
+                        boolean detail,
+                        List<String> ids) throws UserNotFoundException;
+
+    List<User> getUsers(List<String> ids) throws UserNotFoundException;
 
     User getUser(String id) throws UserNotFoundException;
 
