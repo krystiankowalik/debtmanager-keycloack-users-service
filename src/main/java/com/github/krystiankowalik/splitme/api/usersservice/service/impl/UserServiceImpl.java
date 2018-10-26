@@ -64,7 +64,12 @@ public class UserServiceImpl implements UserService {
         val userRepresentations = realm
                 .users()
                 .search(username, firstName, lastName, email, first, max);
-        return UserMapper.from(userRepresentations);
+        val userRepresentationsExcludingAdmin =userRepresentations
+                .stream()
+                .filter(u->!u.getUsername()
+                        .equals("admin"))
+                .collect(Collectors.toList());
+        return UserMapper.from(userRepresentationsExcludingAdmin);
     }
 
     @Override

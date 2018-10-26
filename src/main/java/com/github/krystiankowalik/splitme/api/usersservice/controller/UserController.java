@@ -14,16 +14,7 @@ import java.util.List;
 //@RequestMapping(value = "/users", produces = "application/json")
 public interface UserController {
 
-    /*@GetMapping
-    @ResponseBody
-    ResponseEntity<List<User>> getUsers(String userName,
-                                        String firstName,
-                                        String lastName,
-                                        String email,
-                                        Integer first,
-                                        Integer max,
-                                        boolean detail) throws UserNotFoundException;
-*/  @GetMapping
+    @GetMapping
     @ResponseBody
     ResponseEntity<List<User>> getUsers(@RequestParam(required = false) String userName,
                                         @RequestParam(required = false) String firstName,
@@ -33,11 +24,6 @@ public interface UserController {
                                         @RequestParam(required = false) Integer max,
                                         @RequestParam(required = false) boolean detail,
                                         @RequestBody(required = false) List<String> ids) throws UserNotFoundException;
-
-    /*@GetMapping
-    @ResponseBody
-    ResponseEntity<List<User>> getUsersByIds(List<String> ids) throws UserNotFoundException;
-*/
 
     @GetMapping(value = "/{id}")
     @ResponseBody

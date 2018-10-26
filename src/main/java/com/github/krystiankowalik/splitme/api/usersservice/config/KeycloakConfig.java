@@ -17,19 +17,19 @@ import org.springframework.context.annotation.Scope;
 public class KeycloakConfig {
 
 
-    @Value("${kc.serverUrl}")
+    @Value("${keycloak.auth-server-url}")
     private String KEYCLOAK_SERVER_URL;
 
-    @Value("${kc.realm}")
+    @Value("${keycloak.realm}")
     private String KEYCLOAK_REALM;
 
-    @Value("${kc.admin.username}")
+    @Value("${keycloak.admin.username}")
     private String KEYCLOAK_ADMIN_USERNAME;
 
-    @Value("${kc.admin.password}")
+    @Value("${keycloak.admin.password}")
     private String KEYCLOAK_ADMIN_PASSWORD;
 
-    @Value("${kc.admin.clientId}")
+    @Value("${keycloak.admin.clientId}")
     private String KEYCLOAK_ADMIN_CLIENT_ID;
 
     @Autowired
