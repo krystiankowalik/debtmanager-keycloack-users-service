@@ -23,13 +23,13 @@ public class KeycloakConfig {
     @Value("${keycloak.realm}")
     private String KEYCLOAK_REALM;
 
-    @Value("${keycloak.admin.username}")
+    @Value("${kc.admin.username}")
     private String KEYCLOAK_ADMIN_USERNAME;
 
-    @Value("${keycloak.admin.password}")
+    @Value("${kc.admin.password}")
     private String KEYCLOAK_ADMIN_PASSWORD;
 
-    @Value("${keycloak.admin.clientId}")
+    @Value("${kc.admin.clientId}")
     private String KEYCLOAK_ADMIN_CLIENT_ID;
 
     @Autowired
