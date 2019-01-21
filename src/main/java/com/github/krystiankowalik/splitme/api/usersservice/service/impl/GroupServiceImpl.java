@@ -2,6 +2,7 @@ package com.github.krystiankowalik.splitme.api.usersservice.service.impl;
 
 import com.github.krystiankowalik.splitme.api.usersservice.exception.GroupAlreadyExistsException;
 import com.github.krystiankowalik.splitme.api.usersservice.exception.GroupNotFoundException;
+import com.github.krystiankowalik.splitme.api.usersservice.model.MapUsersGroup;
 import com.github.krystiankowalik.splitme.api.usersservice.model.User;
 import com.github.krystiankowalik.splitme.api.usersservice.service.GroupService;
 import com.github.krystiankowalik.splitme.api.usersservice.service.UserService;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 @AllArgsConstructor
 public class GroupServiceImpl implements GroupService {
 
@@ -164,5 +165,10 @@ public class GroupServiceImpl implements GroupService {
         if (!groupContainsUser(groupId, principal.getName())) {
             throw new NotGroupMemberException("Not Group Member");
         }
+    }
+
+    @Override
+    public List<Group> getGroupsByUserId(String userId) {
+        return null;
     }
 }

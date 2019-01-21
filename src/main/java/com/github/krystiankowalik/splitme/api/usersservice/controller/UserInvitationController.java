@@ -1,5 +1,6 @@
 package com.github.krystiankowalik.splitme.api.usersservice.controller;
 
+import com.github.krystiankowalik.splitme.api.usersservice.exception.AlreadyGroupMemberException;
 import com.github.krystiankowalik.splitme.api.usersservice.model.Invitation;
 import com.github.krystiankowalik.splitme.api.usersservice.exception.GroupNotFoundException;
 import com.github.krystiankowalik.splitme.api.usersservice.exception.UserNotFoundException;
@@ -14,14 +15,14 @@ public interface UserInvitationController {
 
     @GetMapping
     @ResponseBody
-    ResponseEntity<List<Invitation>> getInvitations(Principal principal);
+    ResponseEntity<List<Invitation>> getInvitations(Principal principal) throws GroupNotFoundException, UserNotFoundException;
 
     @GetMapping("/{invitationId}")
     @ResponseBody
-    ResponseEntity<Invitation> getInvitation(@PathVariable String invitationId, Principal principal);
+    ResponseEntity<Invitation> getInvitation(@PathVariable String invitationId, Principal principal) throws GroupNotFoundException, UserNotFoundException;
 
     @PutMapping("/{invitationId}")
-    void processInvitation(@PathVariable String invitationId, boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException;
+    void processInvitation(@PathVariable String invitationId, boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException, AlreadyGroupMemberException;
 
     @DeleteMapping("/{invitationId}")
     void deleteInvitation(@PathVariable String invitationId, Principal principal) throws GroupNotFoundException, UserNotFoundException;

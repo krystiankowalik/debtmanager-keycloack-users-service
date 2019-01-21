@@ -8,6 +8,7 @@ import com.github.krystiankowalik.splitme.api.usersservice.service.GroupService;
 import com.github.krystiankowalik.splitme.api.usersservice.service.InvitationService;
 import com.github.krystiankowalik.splitme.api.usersservice.service.UserService;
 import com.github.krystiankowalik.splitme.api.usersservice.controller.GroupInvitationController;
+import com.github.krystiankowalik.splitme.api.usersservice.util.UtilKt;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +61,13 @@ public class GroupInvitationControllerImpl implements GroupInvitationController 
         if (!joiner.equals(initiator)) {
             groupService.checkGroupMembership(groupId, principal);
         }
-        Invitation invitation = new Invitation(null, group, joiner, initiator);
-        return new ResponseEntity<>(invitationService.save(invitation), HttpStatus.CREATED);
+        Invitation invitation = new Invitation(UtilKt.generateRandomId(), group, joiner, initiator,false);
+        return new ResponseEntity<>(invitationService.add(invitation), HttpStatus.CREATED);
 
     }
 
     @Override
-    public void processInvitation(@PathVariable String groupId, @PathVariable String invitationId, @RequestParam boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException, NotGroupMemberException {
+    public void processInvitation(@PathVariable String groupId, @PathVariable String invitationId, @RequestParam boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException, NotGroupMemberException, AlreadyGroupMemberException {
         groupService.checkGroupMembership(groupId, principal);
         invitationService.processInvitation(invitationId, accepted, principal);
     }

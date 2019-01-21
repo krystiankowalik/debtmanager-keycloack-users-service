@@ -20,7 +20,7 @@ public interface GroupController {
     ResponseEntity<List<Group>> getAllGroups(@RequestParam(required = false) String search,
                                              @RequestParam(required = false) boolean detail,
                                              @RequestParam(required = false) Integer first,
-                                             @RequestParam(required = false) Integer max) throws GroupNotFoundException;
+                                             @RequestParam(required = false) Integer max) throws GroupNotFoundException, UserNotFoundException;
 
     @GetMapping(value = "/{id}")
     @ResponseBody
@@ -38,7 +38,7 @@ public interface GroupController {
     ResponseEntity<Void> deleteGroup(@PathVariable String id, Principal principal) throws UserNotFoundException, GroupNotFoundException, NotGroupMemberException;
 
     @PutMapping(value = "/{id}", consumes = "application/json")
-    ResponseEntity<Group> updateGroup(@RequestBody Group group) throws GroupNotFoundException;
+    ResponseEntity<Group> updateGroup(@RequestBody Group group) throws GroupNotFoundException, UserNotFoundException;
 
 
 

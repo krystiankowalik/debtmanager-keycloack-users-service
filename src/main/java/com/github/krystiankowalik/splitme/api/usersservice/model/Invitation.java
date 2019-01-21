@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,4 +19,5 @@ public class Invitation {
     private Group group;
     private User joiner;
     private User initiator;
+    private boolean accepted;
 }

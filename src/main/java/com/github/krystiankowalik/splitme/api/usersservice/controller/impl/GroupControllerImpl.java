@@ -9,6 +9,8 @@ import com.github.krystiankowalik.splitme.api.usersservice.exception.GroupNotFou
 import com.github.krystiankowalik.splitme.api.usersservice.exception.NotGroupMemberException;
 import com.github.krystiankowalik.splitme.api.usersservice.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +25,13 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupControllerImpl implements GroupController {
 
-    private final GroupService groupService;
+    private GroupService groupService;
 
     @Override
     public ResponseEntity<List<Group>> getAllGroups(@RequestParam(required = false) String search,
                                                     @RequestParam(required = false) boolean detail,
                                                     @RequestParam(required = false) Integer first,
-                                                    @RequestParam(required = false) Integer max) throws GroupNotFoundException {
+                                                    @RequestParam(required = false) Integer max) throws GroupNotFoundException, UserNotFoundException {
         return new ResponseEntity<>(groupService.getAllGroups(search, detail, first, max), HttpStatus.OK);
     }
 
@@ -50,7 +52,7 @@ public class GroupControllerImpl implements GroupController {
     }
 
     @Override
-    public ResponseEntity<Group> updateGroup(@RequestBody Group group) throws GroupNotFoundException {
+    public ResponseEntity<Group> updateGroup(@RequestBody Group group) throws GroupNotFoundException, UserNotFoundException {
         return new ResponseEntity<>(groupService.updateGroup(group), HttpStatus.OK);
     }
 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.List;
 
-@Service
+//@Service
 @AllArgsConstructor
 public class InvitationServiceImpl implements InvitationService {
 
@@ -24,7 +24,7 @@ public class InvitationServiceImpl implements InvitationService {
     private final GroupService groupService;
 
     @Override
-    public Invitation save(Invitation invitation) throws InvitationAlreadyExistsException, UserNotFoundException, GroupNotFoundException, AlreadyGroupMemberException {
+    public Invitation add(Invitation invitation) throws InvitationAlreadyExistsException, UserNotFoundException, GroupNotFoundException, AlreadyGroupMemberException {
         if (exists(invitation)) {
             throw new InvitationAlreadyExistsException("Invitation with those parameters already exists under id: " + invitationRepositiory.getInvitationsByGroup_IdAndJoiner_Id(
                     invitation.getGroup().getId(),
@@ -85,7 +85,7 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public void processInvitation(String invitationId, boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException {
+    public void processInvitation(String invitationId, boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException, AlreadyGroupMemberException {
         Invitation invitation = find(invitationId);
         if (principal.getName().equals(invitation.getJoiner().getId())
                 && !invitation.getInitiator().equals(invitation.getJoiner())) {
@@ -98,13 +98,11 @@ public class InvitationServiceImpl implements InvitationService {
         }
     }
 
-    private void processGroupAddRequest(Invitation invitation, boolean accepted) throws GroupNotFoundException, UserNotFoundException {
+    private void processGroupAddRequest(Invitation invitation, boolean accepted) throws GroupNotFoundException, UserNotFoundException, AlreadyGroupMemberException {
         if (accepted) {
             groupService.addUser(invitation.getGroup().getId(), invitation.getJoiner().getId());
-            delete(invitation);
-        } else {
-            delete(invitation);
         }
+        delete(invitation);
 
     }
 }

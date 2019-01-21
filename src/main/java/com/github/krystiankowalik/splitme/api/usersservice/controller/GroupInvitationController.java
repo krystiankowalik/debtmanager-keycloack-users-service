@@ -33,5 +33,5 @@ public interface GroupInvitationController {
     @PutMapping("/{groupId}/invitations/{invitationId}")
     void processInvitation(@PathVariable String groupId, @PathVariable String invitationId,
                            @RequestParam boolean accepted, Principal principal)
-            throws GroupNotFoundException, UserNotFoundException, NotGroupMemberException;
+            throws GroupNotFoundException, UserNotFoundException, NotGroupMemberException, AlreadyGroupMemberException;
 }

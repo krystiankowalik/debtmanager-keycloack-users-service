@@ -1,5 +1,6 @@
 package com.github.krystiankowalik.splitme.api.usersservice.controller.impl;
 
+import com.github.krystiankowalik.splitme.api.usersservice.exception.AlreadyGroupMemberException;
 import com.github.krystiankowalik.splitme.api.usersservice.model.Invitation;
 import com.github.krystiankowalik.splitme.api.usersservice.service.InvitationService;
 import com.github.krystiankowalik.splitme.api.usersservice.controller.UserInvitationController;
@@ -21,17 +22,17 @@ public class UserInvitationControllerImpl implements UserInvitationController {
     private final InvitationService invitationService;
 
     @Override
-    public ResponseEntity<List<Invitation>> getInvitations(Principal principal) {
+    public ResponseEntity<List<Invitation>> getInvitations(Principal principal) throws GroupNotFoundException, UserNotFoundException {
         return new ResponseEntity<>(invitationService.getInvitationsByJoinerId(principal.getName()), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Invitation> getInvitation(@PathVariable String invitationId, Principal principal) {
+    public ResponseEntity<Invitation> getInvitation(@PathVariable String invitationId, Principal principal) throws GroupNotFoundException, UserNotFoundException {
         return new ResponseEntity<>(invitationService.getInvitationsByJoinerIdAndInvitationId(principal.getName(), invitationId), HttpStatus.OK);
     }
 
     @Override
-    public void processInvitation(@PathVariable String invitationId, boolean accepted,Principal principal) throws GroupNotFoundException, UserNotFoundException {
+    public void processInvitation(@PathVariable String invitationId, boolean accepted,Principal principal) throws GroupNotFoundException, UserNotFoundException, AlreadyGroupMemberException {
         invitationService.processInvitation(invitationId,accepted,principal);
     }
 

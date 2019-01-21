@@ -1,7 +1,11 @@
 package com.github.krystiankowalik.splitme.api.usersservice.service.impl;
 
+import com.github.krystiankowalik.splitme.api.usersservice.db.GroupRepositiory;
+import com.github.krystiankowalik.splitme.api.usersservice.db.MapUsersGroupRepositiory;
 import com.github.krystiankowalik.splitme.api.usersservice.model.Group;
+import com.github.krystiankowalik.splitme.api.usersservice.model.MapUsersGroup;
 import com.github.krystiankowalik.splitme.api.usersservice.model.User;
+import com.github.krystiankowalik.splitme.api.usersservice.service.GroupService;
 import com.github.krystiankowalik.splitme.api.usersservice.service.UserService;
 import com.github.krystiankowalik.splitme.api.usersservice.util.GroupMapper;
 import com.github.krystiankowalik.splitme.api.usersservice.util.UserMapper;
@@ -9,6 +13,7 @@ import com.github.krystiankowalik.splitme.api.usersservice.exception.UserNotFoun
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotAuthorizedException;
@@ -24,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
 
     private final RealmResource realm;
+    private final MapUsersGroupRepositiory mapUsersGroupRepositiory;
+    private final GroupRepositiory groupRepositiory;
+
 
     @Override
     public List<User> getUsers(String userName,
@@ -64,9 +72,9 @@ public class UserServiceImpl implements UserService {
         val userRepresentations = realm
                 .users()
                 .search(username, firstName, lastName, email, first, max);
-        val userRepresentationsExcludingAdmin =userRepresentations
+        val userRepresentationsExcludingAdmin = userRepresentations
                 .stream()
-                .filter(u->!u.getUsername()
+                .filter(u -> !u.getUsername()
                         .equals("admin"))
                 .collect(Collectors.toList());
         return UserMapper.from(userRepresentationsExcludingAdmin);
@@ -75,6 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers(List<String> ids) throws UserNotFoundException {
         val allUsers = getUsers(null, null, null, null, null, null);
+        System.out.println("All users? " + allUsers);
         return allUsers.stream().filter(u -> ids.contains(u.getId())).collect(Collectors.toList());
 
     }
@@ -93,7 +102,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Group> getUsersGroups(String userId) throws UserNotFoundException {
         userExists(userId);
-        return GroupMapper.from(realm.users().get(userId).groups());
+//        return GroupMapper.from(realm.users().get(userId).groups());
+        return mapUsersGroupRepositiory
+                .findAllByUserId(userId).stream()
+                .map(MapUsersGroup::getGroupId)
+                .map(groupRepositiory::getOne)
+                .collect(Collectors.toList());
+
     }
 
 

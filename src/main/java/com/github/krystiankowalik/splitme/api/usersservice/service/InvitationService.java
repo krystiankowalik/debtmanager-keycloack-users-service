@@ -13,22 +13,23 @@ import java.util.List;
 @Service
 public interface InvitationService {
 
-    Invitation save(Invitation invitation) throws InvitationAlreadyExistsException, UserNotFoundException, GroupNotFoundException, AlreadyGroupMemberException;
+    Invitation add(Invitation invitation) throws InvitationAlreadyExistsException, UserNotFoundException, GroupNotFoundException, AlreadyGroupMemberException;
 
-    Invitation find(String id);
+    Invitation find(String id) throws GroupNotFoundException, UserNotFoundException;
 
-    List<Invitation> findInvitationsByGroupId(String groupId);
+    List<Invitation> findInvitationsByGroupId(String groupId) throws GroupNotFoundException, UserNotFoundException;
 
-    List<Invitation> getInvitationsByJoinerId(String joinerId);
+    List<Invitation> getInvitationsByJoinerId(String joinerId) throws GroupNotFoundException, UserNotFoundException;
 
-    Invitation getInvitationsByJoinerIdAndInvitationId(String joinerId, String invitationId);
+    Invitation getInvitationsByJoinerIdAndInvitationId(String joinerId, String invitationId) throws GroupNotFoundException, UserNotFoundException;
 
     boolean exists(Invitation invitation);
 
-    List<Invitation> getInvitations();
+    List<Invitation> getInvitations() throws GroupNotFoundException, UserNotFoundException;
 
     boolean delete(Invitation invitation);
-    boolean delete(String invitationId);
 
-    void processInvitation(String invitationId, boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException;
+    boolean delete(String invitationId) throws GroupNotFoundException, UserNotFoundException;
+
+    void processInvitation(String invitationId, boolean accepted, Principal principal) throws GroupNotFoundException, UserNotFoundException, AlreadyGroupMemberException;
 }

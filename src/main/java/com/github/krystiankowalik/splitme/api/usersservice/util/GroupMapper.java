@@ -22,6 +22,7 @@ public final class GroupMapper {
         return groupRepresentation;
     }
 
+
     public static List<Group> from(List<GroupRepresentation> groupRepresentations) {
         val groups = new ArrayList<Group>();
         for (GroupRepresentation groupRepresentation : groupRepresentations) {
